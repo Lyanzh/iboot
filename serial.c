@@ -42,12 +42,59 @@ void putc(unsigned char c)
  */
 unsigned char getc(void)
 {
+	unsigned char ret;
+
     /* 等待，直到接收缓冲区中的有数据 */
     while (!(UTRSTAT0 & RXD0READY));
     
     /* 直接读取URXH0寄存器，即可获得接收到的数据 */
-    return URXH0;
+    ret = URXH0;
+
+#ifdef SERIAL_ECHO
+	if (ret == 0x0d || ret == 0x0a)
+	{
+		putc(0x0d);
+		putc(0x0a);
+	}
+	else
+	{
+		putc(ret);
+	}
+#endif
+
+	return ret;
 }
+
+/*
+ * 发送一个字符串
+ */
+void puts (/*const*/ char *s)
+{
+	/* Send directly to the handler */
+	while (*s) {
+		putc (*s++);
+	}
+}
+
+#if 0
+void uart_printf (const char *fmt, ...)
+{
+	va_list args;
+	char printbuffer[256];
+
+	va_start (args, fmt);
+
+	/* For this to work, printbuffer must be larger than
+	 * anything we ever want to print.
+	 */
+	vsprintf (printbuffer, fmt, args);
+
+	/* Print the string */
+	puts (printbuffer);
+
+	va_end (args);
+}
+#endif
 
 /*
  * 判断一个字符是否数字

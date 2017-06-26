@@ -1,16 +1,33 @@
-objs := head.o init.o serial.o main.o
+
+CC      = arm-linux-gcc
+LD      = arm-linux-ld
+AR      = arm-linux-ar
+OBJCOPY = arm-linux-objcopy
+OBJDUMP = arm-linux-objdump
+INCLUDEDIR 	:= $(shell pwd)/include
+CFLAGS 		:= -Wall -O2
+CPPFLAGS   	:= -nostdinc -I$(INCLUDEDIR)
+
+export 	CC LD OBJCOPY OBJDUMP INCLUDEDIR CFLAGS CPPFLAGS
+
+objs := head.o init.o nand.o serial.o main.o lib/libc.a
 
 iBoot.bin: $(objs)
-	arm-linux-ld -Tiboot.lds -o iBoot_elf $^
-	arm-linux-objcopy -O binary -S iBoot_elf $@
-	arm-linux-objdump -D -m arm iBoot_elf > iBoot.dis
-	
+	${LD} -Tiboot.lds -Ttext 0x33F80000 -o iBoot_elf $^
+	${OBJCOPY} -O binary -S iBoot_elf $@
+	${OBJDUMP} -D -m arm iBoot_elf > iBoot.dis
+
+.PHONY : lib/libc.a
+lib/libc.a:
+	cd lib; make; cd ..
+
 %.o:%.c
-	arm-linux-gcc -Wall -O2 -c -o $@ $<
+	${CC} $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
 
 %.o:%.S
-	arm-linux-gcc -Wall -O2 -c -o $@ $<
+	${CC} $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
 
 clean:
+	make  clean -C lib
 	rm -f iBoot.bin iBoot_elf iBoot.dis *.o
 	

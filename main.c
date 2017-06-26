@@ -1,24 +1,22 @@
+#include "stdio.h"
 #include "serial.h"
 
 int main()
 {
-    unsigned char c;
+    char str[10];
 
-	mmu_enableIcache();
-	mmu_enableDcache();
-	
+	//mmu_enableIcache();
+	//mmu_enableDcache();
+
     uart0_init();   // 波特率115200，8N1(8个数据位，无校验位，1个停止位)
 	
-	putc('a');
-	putc('b');
-	putc('c');
+
+	printf("iBoot: A bootloader for JZ2440, version = %s.\r\n", "V0.00.01");
 
     while(1)
     {
-        // 从串口接收数据后，判断其是否数字或子母，若是则加1后输出
-        c = getc();
-        if (isDigit(c) || isLetter(c))
-            putc(c+1);
+        scanf("%s", str);
+        printf("%s\r\n", str);
     }
 
     return 0;

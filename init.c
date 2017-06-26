@@ -34,7 +34,7 @@ void disable_interrupt()
  *  S3C2410: MPLL(FCLK) = (m * Fin)/(p * 2^s)
  *  S3C2440: MPLL(FCLK) = (2 * m * Fin)/(p * 2^s)
  *  其中: m = MDIV + 8, p = PDIV + 2, s = SDIV
- * 对于本开发板，Fin = 12MHz
+ * 对于本开发板JZ2440，Fin = 12MHz
  * 设置CLKDIVN，令分频比为：FCLK:HCLK:PCLK=1:2:4，
  * FCLK=200MHz,HCLK=100MHz,PCLK=50MHz
  */

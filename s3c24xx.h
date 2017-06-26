@@ -1,3 +1,7 @@
+#ifndef __S3C24XX_H__
+#define __S3C24XX_H__
+
+
 /* WOTCH DOG register */
 #define     WTCON           (*(volatile unsigned long *)0x53000000)
 
@@ -73,3 +77,5 @@
 #define	TCNTO0		(*(volatile unsigned long *)0x51000014)
 
 #define GSTATUS1    (*(volatile unsigned long *)0x560000B0)
+
+#endif
