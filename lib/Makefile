@@ -10,5 +10,4 @@ libc.a: $(objs)
 	${CC} $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
 
 clean:
-	rm -f libc.a *.o		
-	
+	rm -f libc.a *.o

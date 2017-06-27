@@ -10,7 +10,7 @@ CPPFLAGS   	:= -nostdinc -I$(INCLUDEDIR)
 
 export 	CC LD OBJCOPY OBJDUMP INCLUDEDIR CFLAGS CPPFLAGS
 
-objs := head.o init.o nand.o serial.o main.o lib/libc.a
+objs := head.o init.o nand.o board.o cpu.o serial.o smdk2440.o lib/libc.a
 
 iBoot.bin: $(objs)
 	${LD} -Tiboot.lds -Ttext 0x33F80000 -o iBoot_elf $^
